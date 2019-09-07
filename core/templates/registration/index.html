@@ -4,7 +4,12 @@
 
 {% block body %}
 
+{% if user.is_authenticated %}
+    {% include 'core/user_home.html' %}
+    {% include 'core/base_footer.html' %}
 
+
+{% else %}
 <style>
 .carousel{
     background: #2f4357;
@@ -62,6 +67,9 @@
     </div>
 </div>
 
+
 {% include 'core/base_footer.html' %}
+{% endif %}
 
 {% endblock %}
+

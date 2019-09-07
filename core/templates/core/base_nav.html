@@ -10,31 +10,65 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+<!------ Include the above in your HEAD tag ---------->
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <style type="text/css">
         .bs-example{
             margin: 20px;
         }
+
+        .inset img {
+            border-radius: 30px;
+            border-style:solid;
+            border-color:white;
+            width: 40px;
+            height: 40px;
+            display: block;
+            position: relative;
+            z-index: 998;
+        }
+
     </style>
 </head>
 <body>
 <div class="bs-example">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a href="#" class="navbar-brand">Brand</a>
+        <a href="#" class="navbar-brand">Friends</a>
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-
+        {% if user.is_authenticated %}
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav">
-                <a href="#" class="nav-item nav-link active">Home</a>
-                <a href="#" class="nav-item nav-link">About</a>
-                <a href="#" class="nav-item nav-link">Products</a>
-            </div>
-            <form class="form-inline ml-auto">
+                <a class="btn btn-light mr-sm-2" href="#" class="nav-item nav-link">Welcome,{{user.username}}</a>
                 <input type="text" class="form-control mr-sm-2" placeholder="Search">
                 <button type="submit" class="btn btn-outline-light">Search</button>
+            </div>
+            <form class="form-inline ml-auto">
+                <a class="btn btn-light mr-sm-2" href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
+                <li>
+                <div class="inset mr-sm-2">
+                  <a><img src="static/core/images/img_avatar.png"></a>
+                </div>
+              </li>
+              <a class="btn btn-light mr-sm-2" href="{% url 'logout' %}" class="nav-item nav-link">Logout</a>
             </form>
         </div>
+        {% else %}
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav">
+                <input type="text" class="form-control mr-sm-2" placeholder="Search">
+                <button type="submit" class="btn btn-outline-light">Search</button>
+            </div>
+            <form class="form-inline ml-auto">
+                <a class="btn btn-light mr-sm-2" href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
+                <a class="btn btn-light mr-sm-2" href="{% url 'login' %}" class="nav-item nav-link">Login</a>
+                <a class="btn btn-light mr-sm-2" href="{% url 'signup' %}" class="nav-item nav-link">SignUp</a>
+            </form>
+        </div>
+        {% endif %}
     </nav>
 </div>
 
