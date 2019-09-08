@@ -1,0 +1,15 @@
+{% extends 'core/base_nav.html' %}
+{% block login_active %}active{% endblock %}
+
+
+{% block body %}
+<div class="container">
+<h1> Profile Update</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        
+        <input type="submit" value="Update">
+    </form>
+</div>
+{% endblock %}

@@ -3,6 +3,8 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import Permission, User
 from django.db.models.deletion import CASCADE
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.core.validators import RegexValidator, MinValueValidator
 # from django.contrib.auth.models import UserManager
 
@@ -20,7 +22,14 @@ class Profile(models.Model):
     
     def __str__(self):
         return "%s" % (self.user)
-		
+
+
+@receiver(post_save, sender=User)
+def save_profie(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance, name = instance.username)
+    instance.profile.save()
+
 
 class Post(models.Model):
     pic = models.ImageField(upload_to="images\\",null=True)

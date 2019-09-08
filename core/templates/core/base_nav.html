@@ -29,6 +29,9 @@
             position: relative;
             z-index: 998;
         }
+        #margin-top{
+            margin-top: 5.5%;
+        }
 
     </style>
 </head>
@@ -50,9 +53,10 @@
                 <a class="btn btn-light mr-sm-2" href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
                 <li>
                 <div class="inset mr-sm-2">
-                  <a><img src="static/core/images/img_avatar.png"></a>
+                  <a><img src=""></a>
                 </div>
               </li>
+              <a class="btn btn-light mr-sm-2" href="/profile/edit/{{ user.profile.id }}" class="nav-item nav-link">Edit Profile</a>
               <a class="btn btn-light mr-sm-2" href="{% url 'logout' %}" class="nav-item nav-link">Logout</a>
             </form>
         </div>
@@ -71,8 +75,10 @@
         {% endif %}
     </nav>
 </div>
+<div id="margin-top">
 
 {% block body %}
 {% endblock %}
+</div>
 </body>
 </html>
