@@ -37,6 +37,7 @@ class Post(models.Model):
     msg = models.TextField(null=True, blank=True)
     cr_date = models.DateTimeField(auto_now_add=True)
     count = models.IntegerField(default=0)
+    comment_count = models.IntegerField(default=0)
     upload_by = models.ForeignKey(to=User, on_delete= CASCADE,null=True, blank=True)
     
     def __str__(self):
@@ -47,8 +48,8 @@ class Comment(models.Model):
     msg = models.TextField(null=True, blank=True)
     commented_by = models.ForeignKey(to=User, on_delete= CASCADE)
     cr_date = models.DateTimeField(auto_now_add=True)
-    count = models.IntegerField(default=0)
     
+
     def __str__(self):
         return "%s" % (self.msg)
 

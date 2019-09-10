@@ -173,25 +173,33 @@ def dislike(request,pk):
 
 
 def comment(request,pk):
+    usr = request.user
     if (request.method == 'POST'):
+        
         form = forms.CommentCreateForm(request.POST)
         if (form.is_valid()):
 
-            obj = form.save()
-            print(request.user)
-            obj.commented_by= request.user
-            obj.msg = form.cleaned_data.get('msg')
-
-            usr= request.user
+            commented_by= usr
+            msg = form.cleaned_data.get('msg')
+        
             user_post = Post.objects.get(pk=pk)
-            obj.post = user_post
+            post = user_post
 
-            count = obj.count
-            obj.count = count+1
+            user_post = Post.objects.get(pk=pk)
+            count = user_post.count
+            user_post.count = count+1
+            user_post.save()
 
-            obj.save()
+            Comment.objects.create(post=post,commented_by=commented_by,msg=msg)
+
             return redirect("/")
     else:
+       
         form = forms.CommentCreateForm()
     
     return render(request, 'core/comment.html', {'form': form})
+
+
+# class ProfileDetailView(DetailView):
+#     model = Profile
+#     template_name = 'core/profile_detail.html'
