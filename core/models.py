@@ -55,6 +55,7 @@ class Comment(models.Model):
 
 class PostLike(models.Model):
     post = models.ForeignKey(to=Post, on_delete= CASCADE)
+    count = models.IntegerField(default=0)
     liked_by = models.ForeignKey(to=User, on_delete= CASCADE)
     cr_date = models.DateTimeField(auto_now_add=True)
 

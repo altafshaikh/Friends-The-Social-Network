@@ -13,17 +13,18 @@ from django.views.generic.base import View
 class IndexView(View):
 
     def get(self, request, *args, **kwargs):
-        context = {}
+        context = {"posts":[]}
         post_list=[]
-        pro_id = self.request.user.profile.id
-        usr_pro = Profile.objects.filter(pk=6)[0]
-        usr_follow = FollowUser.objects.filter(followed_by=usr_pro)
-        for profile in usr_follow:
-            following_usr = profile.profile.user
-            post = Post.objects.filter(upload_by=following_usr)[0]
-            post_list.append(post)
-        context["posts"]=post_list
-        print(context)
+        if not self.request.user == None:
+            pro_id = self.request.user.profile.id
+            usr_pro = Profile.objects.filter(pk=pro_id)[0]
+            usr_follow = FollowUser.objects.filter(followed_by=usr_pro)
+            for profile in usr_follow:
+                following_usr = profile.profile.user
+                post = Post.objects.filter(upload_by=following_usr)[0]
+                post_list.append(post)
+            context["posts"]=post_list
+        # print(context)
         return render(request, "registration/index.html", context=context)
 
     
@@ -117,8 +118,23 @@ class ProfileListView(ListView):
         si = self.request.GET.get("si")
         if si==None:
             si=""
-        return Profile.objects.filter(Q(name__icontains = si) | Q(gender__icontains = si) | Q(status__icontains = si) | Q(age__icontains = si)).order_by("-id")
+        return Profile.objects.filter(Q(name__icontains = si) | Q(gender__icontains = si) | Q(status__icontains = si) | Q(age__icontains = si)).filter(~Q(id__in=[1,self.request.user.profile.id])).order_by("-id")
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProfileListView, self).get_context_data(*args, **kwargs)
+        context["profile_list"]=Profile.objects.all().filter(~Q(id__in=[1,self.request.user.profile.id])).order_by("-id")
+        pro_id = self.request.user.profile.id
+        usr_pro = Profile.objects.filter(pk=pro_id)[0]
+        usr_follow = FollowUser.objects.filter(followed_by=usr_pro)
+
+        following_list = []
+        for profile in usr_follow:
+            following_usr = profile.profile.user
+            following_list.append(following_usr)
+
+        context['follow_list'] = following_list
+        print(context)
+        return context
 
 class ProfileDetailView(DetailView):
     model = Profile
@@ -127,4 +143,12 @@ class ProfileDetailView(DetailView):
 def follow(request,pk):
     user = Profile.objects.get(pk=pk)
     FollowUser.objects.create(profile=user,followed_by=request.user.profile)
+    return HttpResponseRedirect(redirect_to = "/profile/")
+def unfollow(request,pk):
+    user = Profile.objects.get(pk=pk)
+    criterion1 = Q(profile=user)
+    criterion2 = Q(followed_by=request.user.profile)
+    obj = FollowUser.objects.filter(criterion1 & criterion2)
+    # print(obj[0].profile)
+    obj.delete()
     return HttpResponseRedirect(redirect_to = "/profile/")

@@ -29,7 +29,11 @@
         <td>{{n1.gender}}</td>
         <td>
         <a class="btn btn-dark btn-sm" href="/profile/{{n1.id}}">Detail</a> 
+        {% if n1.user in follow_list %}
+        <a class="btn btn-dark btn-sm" href="/profile/unfollow/{{n1.id}}">UnFollow</a>
+        {% else %}
         <a class="btn btn-dark btn-sm" href="/profile/follow/{{n1.id}}">Follow</a>
+        {% endif %}
         </td>
         
     </tr>
