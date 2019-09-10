@@ -13,6 +13,10 @@ urlpatterns = [
     path("post/<int:pk>", core_views.PostDetailView.as_view(), name='postdetail'),
     path("post/", core_views.PostListView.as_view(), name='post'),
     path("post/delete/<int:pk>", core_views.PostDeleteView.as_view(success_url="/post/"), name='postdelete'),
+    
+    path("profile/<int:pk>", core_views.ProfileDetailView.as_view(), name='profiledetail'),
+    path("profile/", core_views.ProfileListView.as_view(), name='profile'),
+
     url(r'^login/$', auth_views.LoginView.as_view(),{'template_name': 'core/login.html'}, name='login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(),{'template_name': 'core/logout.html'}, name='logout'),
     url(r"^signup/$", core_views.signup, name="signup"),

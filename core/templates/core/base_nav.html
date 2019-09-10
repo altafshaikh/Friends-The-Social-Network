@@ -46,8 +46,10 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav">
                 <a class="btn btn-light mr-sm-2" href="#" class="nav-item nav-link">Welcome,{{user.username}}</a>
-                <input type="text" class="form-control mr-sm-2" placeholder="Search">
-                <button type="submit" class="btn btn-outline-light">Search</button>
+                <form action="/profile/" class="form-inline">
+                    <input type="text" class="form-control mr-sm-2" placeholder="Search" value="{{ request.GET.si }}" type="text" name ="si" />
+                    <button type="submit" class="btn btn-outline-light">Search</button>
+                </form>
             </div>
             <form class="form-inline ml-auto">
                 <a class="btn btn-light mr-sm-2" href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
@@ -58,6 +60,7 @@
               </li> {% endcomment %}
               <a class="btn btn-light mr-sm-2" href="/profile/edit/{{ user.profile.id }}" class="nav-item nav-link">Edit Profile</a>
               <a class="btn btn-light mr-sm-2" href="{% url 'post' %}" class="nav-item nav-link">Posts</a>
+              <a class="btn btn-light mr-sm-2" href="{% url 'profile' %}" class="nav-item nav-link">Profiles</a>
               <a class="btn btn-light mr-sm-2" href="{% url 'logout' %}" class="nav-item nav-link">Logout</a>
             </form>
         </div>

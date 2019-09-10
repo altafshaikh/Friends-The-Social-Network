@@ -12,6 +12,8 @@ from django.db.models import Q
 class IndexView(TemplateView):
     template_name = 'registration/index.html'
 
+    
+
 @method_decorator(login_required, name="dispatch")
 class ProfileUpdateView(UpdateView):
     model = Profile
@@ -51,8 +53,8 @@ def signup(request):
 def post_create(request):
     print(request.method == 'POST')
     if (request.method == 'POST'):
-        form = forms.PostCreateForm(request.POST)
-        print("here")
+        form = forms.PostCreateForm(request.POST, request.FILES)
+
         # print(form.errors)#most helpfull statement help me to slove the error
         if (form.is_valid()):
             print("why i am not here")
@@ -62,6 +64,7 @@ def post_create(request):
             
             user.subject = form.cleaned_data.get('subject')
             user.msg = form.cleaned_data.get('msg')
+            print(form.cleaned_data.get('pic'))
             user.pic = form.cleaned_data.get('pic')
             user.save()
             print("i reached here")
@@ -91,6 +94,18 @@ class PostDetailView(DetailView):
 class PostDeleteView(DeleteView):
     model = Post
 
+@method_decorator(login_required, name="dispatch")
+class ProfileListView(ListView):
+    model = Profile
+    template_name = "core/profile_list.html"
 
-# class PostDoneView(TemplateView):
-#     template_name = 'registration/done.html'
+    def get_queryset(self):
+        si = self.request.GET.get("si")
+        if si==None:
+            si=""
+        return Profile.objects.filter(Q(name__icontains = si) | Q(gender__icontains = si) | Q(status__icontains = si) | Q(age__icontains = si)).order_by("-id")
+
+
+class ProfileDetailView(DetailView):
+    model = Profile
+    template_name = 'core/profile_detail.html'
