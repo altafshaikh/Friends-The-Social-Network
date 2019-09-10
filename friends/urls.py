@@ -17,6 +17,8 @@ urlpatterns = [
     path("profile/<int:pk>", core_views.ProfileDetailView.as_view(), name='profiledetail'),
     path("profile/", core_views.ProfileListView.as_view(), name='profile'),
 
+    path("profile/follow/<int:pk>", core_views.follow, name='follow'),
+    
     url(r'^login/$', auth_views.LoginView.as_view(),{'template_name': 'core/login.html'}, name='login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(),{'template_name': 'core/logout.html'}, name='logout'),
     url(r"^signup/$", core_views.signup, name="signup"),

@@ -109,3 +109,8 @@ class ProfileListView(ListView):
 class ProfileDetailView(DetailView):
     model = Profile
     template_name = 'core/profile_detail.html'
+
+def follow(request,pk):
+    user = Profile.objects.get(pk=pk)
+    FollowUser.objects.create(profile=user,followed_by=request.user.profile)
+    return HttpResponseRedirect(redirect_to = "/profile/")
