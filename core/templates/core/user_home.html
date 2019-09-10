@@ -1,4 +1,20 @@
 
+<style>
+#like{
+    height:38px;
+    width:40px
+}
+#liked{
+    height:38px;
+    width:65px
+}
+#like_count{
+    height:38px;
+    width:40px
+
+}
+
+</style>
 {% if posts %}
 
 {% for post in posts %}
@@ -8,7 +24,7 @@
     
     <div class="col-sm-auto">
         <div class="card" style="width: 25rem;margin:10px;">
-            <div class="card-body">
+            <div class="card-body" id="head">
                 <h5 class="card-title">{{post.upload_by}}<span style="float: right;">{{post.cr_date | date:"d/m/y"}}</span></h5>
             </div>
             
@@ -19,12 +35,18 @@
             </div>
             
             <div class="card-body">
-                <a href="#" class="card-link">Like</a>
-                <a href="#" class="card-link">Comment</a>
-                <a href="#" class="card-link">Detail</a>
+                <a id="like_count" href="" class="btn btn-primary mr-2">{{post.count}}</a>
+                {% if post in post_likes %}
+                    <a id="liked" href="/post/dislike/{{post.id}}" class="btn btn-primary mr-2">Liked</i></a>
+                {% else %}
+                    <a id="like" href="/post/like/{{post.id}}" class="btn btn-primary mr-2"><i class="fa fa-thumbs-up 4x"></i></a>
+                {% endif %}
+                
+                <a href="/post/comment/{{post.id}}" class="btn btn-primary mr-2">Comment</a>
+                <a href="#" class="btn btn-primary mr-1">Detail</a>
+                <a href="#" class="btn btn-primary"><i class="fa fa-flag"></i></a>
             </div>
-        </div>
-    </div>
+    </div> 
     
   </div>
 </div>

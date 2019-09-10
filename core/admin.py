@@ -30,5 +30,5 @@ admin.site.register(Profile, ProfileAdmin)
 class CommentAdmin(ModelAdmin):
     list_display = ["post","msg"]
     search_fields = ["msg","post","commented_by"]
-    list_filter = ["cr_date","flag"]
+    list_filter = ["cr_date"]
 admin.site.register(Comment, CommentAdmin)

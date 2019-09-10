@@ -15,16 +15,29 @@ class IndexView(View):
     def get(self, request, *args, **kwargs):
         context = {"posts":[]}
         post_list=[]
+        post_like_list=[]
         if not self.request.user == None:
+            user = self.request.user
             pro_id = self.request.user.profile.id
             usr_pro = Profile.objects.filter(pk=pro_id)[0]
             usr_follow = FollowUser.objects.filter(followed_by=usr_pro)
+            usr_post_liked = PostLike.objects.filter(liked_by=usr_pro.user)
+            print(usr_post_liked)
             for profile in usr_follow:
                 following_usr = profile.profile.user
                 post = Post.objects.filter(upload_by=following_usr)[0]
                 post_list.append(post)
+
+            for usr_liked in usr_post_liked:
+                liked_usr_post = usr_liked.post
+                print(liked_usr_post)
+                # post = Post.objects.filter(upload_by=liked_usr)[0]
+                post_like_list.append(liked_usr_post)
+            
             context["posts"]=post_list
-        # print(context)
+            context["post_likes"]=post_like_list
+            context["user"] =user
+        print(context)
         return render(request, "registration/index.html", context=context)
 
     
@@ -53,18 +66,6 @@ def signup(request):
         form = forms.UserCreateForm()
     return render(request, 'registration/signup.html', {'form': form})
 
-# @method_decorator(login_required, name="dispatch")
-# class PostCreateView(CreateView):
-#     model = Post
-#     template_name = "core/create_post.html"
-#     fields = ["subject","msg","pic"]
-
-#     def form_valid(self,form):
-#         self.object = form.save()
-#         self.object.upload_by = self.request.user.profile
-#         self.object.save()
-#         return HttpResponseRedirect(reverse_lazy('core:post'))
-
 def post_create(request):
     print(request.method == 'POST')
     if (request.method == 'POST'):
@@ -72,18 +73,16 @@ def post_create(request):
 
         # print(form.errors)#most helpfull statement help me to slove the error
         if (form.is_valid()):
-            # print("why i am not here")
+            
             user = form.save()
             user.refresh_from_db()  # load the profile instance created by the signal
             user.upload_by= request.user
             
             user.subject = form.cleaned_data.get('subject')
             user.msg = form.cleaned_data.get('msg')
-            # print(form.cleaned_data.get('pic'))
+
             user.pic = form.cleaned_data.get('pic')
             user.save()
-            # print("i reached here")
-            #post_list = Post.objects.filter(Q(upload_by = self.request.user)).filter(Q(subject__icontains = si) | Q(msg__icontains = si)).order_by("-id")
             return redirect("post")
     else:
         form = forms.PostCreateForm()
@@ -101,7 +100,6 @@ class PostListView(ListView):
             si=""
         return Post.objects.filter(Q(upload_by = self.request.user)).filter(Q(subject__icontains = si) | Q(msg__icontains = si)).order_by("-id")
     
-
 class PostDetailView(DetailView):
     model = Post
     template_name = 'core/post_detail.html'
@@ -152,3 +150,48 @@ def unfollow(request,pk):
     # print(obj[0].profile)
     obj.delete()
     return HttpResponseRedirect(redirect_to = "/profile/")
+
+def like(request,pk):
+    usr= request.user
+    user_post = Post.objects.get(pk=pk)
+    count = user_post.count
+    user_post.count = count+1
+    user_post.save()
+    PostLike.objects.create(post=user_post,liked_by=usr)
+    return HttpResponseRedirect(redirect_to = "/")
+
+def dislike(request,pk):
+    user_post = Post.objects.get(pk=pk)
+    criterion1 = Q(post=user_post)
+    criterion2 = Q(liked_by=request.user)
+    obj = PostLike.objects.filter(criterion1 & criterion2)
+    count = user_post.count
+    user_post.count = count-1
+    user_post.save()
+    obj.delete()
+    return HttpResponseRedirect(redirect_to = "/")
+
+
+def comment(request,pk):
+    if (request.method == 'POST'):
+        form = forms.CommentCreateForm(request.POST)
+        if (form.is_valid()):
+
+            obj = form.save()
+            print(request.user)
+            obj.commented_by= request.user
+            obj.msg = form.cleaned_data.get('msg')
+
+            usr= request.user
+            user_post = Post.objects.get(pk=pk)
+            obj.post = user_post
+
+            count = obj.count
+            obj.count = count+1
+
+            obj.save()
+            return redirect("/")
+    else:
+        form = forms.CommentCreateForm()
+    
+    return render(request, 'core/comment.html', {'form': form})

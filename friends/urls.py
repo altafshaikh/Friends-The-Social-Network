@@ -20,6 +20,11 @@ urlpatterns = [
     path("profile/follow/<int:pk>", core_views.follow, name='follow'),
     path("profile/unfollow/<int:pk>", core_views.unfollow, name='unfollow'),
 
+    path("post/like/<int:pk>", core_views.like, name='like'),
+    path("post/dislike/<int:pk>", core_views.dislike, name='dislike'),
+    path("post/comment/", core_views.comment, name='comment'),
+    path("post/comment/<int:pk>", core_views.comment, name='commentpost'),
+
     url(r'^login/$', auth_views.LoginView.as_view(),{'template_name': 'core/login.html'}, name='login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(),{'template_name': 'core/logout.html'}, name='logout'),
     url(r"^signup/$", core_views.signup, name="signup"),
