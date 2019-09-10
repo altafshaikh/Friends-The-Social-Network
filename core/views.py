@@ -36,9 +36,53 @@ def signup(request):
         form = forms.UserCreateForm()
     return render(request, 'registration/signup.html', {'form': form})
 
+# @method_decorator(login_required, name="dispatch")
+# class PostCreateView(CreateView):
+#     model = Post
+#     template_name = "core/create_post.html"
+#     fields = ["subject","msg","pic"]
 
+#     def form_valid(self,form):
+#         self.object = form.save()
+#         self.object.upload_by = self.request.user.profile
+#         self.object.save()
+#         return HttpResponseRedirect(reverse_lazy('core:post'))
 
-# class SignUp(CreateView):
-#     form_class = forms.UserCreateForm
-#     success_url = reverse_lazy("login")
-#     template_name = "registration/signup.html"
+def post_create(request):
+    print(request.method == 'POST')
+    if (request.method == 'POST'):
+        form = forms.PostCreateForm(request.POST)
+        print("here")
+        # print(form.errors)#most helpfull statement help me to slove the error
+        if (form.is_valid()):
+            print("why i am not here")
+            user = form.save()
+            user.refresh_from_db()  # load the profile instance created by the signal
+            user.upload_by= request.user
+            
+            user.subject = form.cleaned_data.get('subject')
+            user.msg = form.cleaned_data.get('msg')
+            user.pic = form.cleaned_data.get('pic')
+            user.save()
+            print("i reached here")
+            #post_list = Post.objects.filter(Q(upload_by = self.request.user)).filter(Q(subject__icontains = si) | Q(msg__icontains = si)).order_by("-id")
+            return redirect("post")
+    else:
+        form = forms.PostCreateForm()
+        print("i am returning fro here")
+    return render(request, 'core/create_post.html', {'form': form})
+
+@method_decorator(login_required, name="dispatch")
+class PostListView(ListView):
+    model = Post
+    template_name = "core/list_post.html"
+
+    def get_queryset(self):
+        si = self.request.GET.get("si")
+        if si==None:
+            si=""
+        return Post.objects.filter(Q(upload_by = self.request.user)).filter(Q(subject__icontains = si) | Q(msg__icontains = si)).order_by("-id")
+    
+
+# class PostDoneView(TemplateView):
+#     template_name = 'registration/done.html'

@@ -1,0 +1,33 @@
+{% extends 'core/base_nav.html' %}
+{% block body %}
+
+<div id="box">
+
+<h1 id="thanks">Your Post is Been Created</h1>
+
+</div>
+
+
+<style>
+#box{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+-ms-transform:translate(-50%,-50%)
+
+
+}
+#thanks{
+  text-align: center;
+  color:white;
+}
+
+{% comment %} body{
+  background-image: url('/static/winter.jpg');
+  background-size: cover;
+} {% endcomment %}
+</style>
+
+
+{% endblock %}

@@ -9,6 +9,10 @@ from friends import settings
 urlpatterns = [
     url(r"^$", core_views.IndexView.as_view(), name="index"),
     path("profile/edit/<int:pk>", core_views.ProfileUpdateView.as_view(success_url="/"), name='editprofile'),
+    path("user/post/", include('core.urls')),
+    # path("user/post/done",core_views.PostDoneView.as_view(),name="done"),
+    # path("post/create/", core_views.PostCreateView.as_view(success_url="/post/"), {'template_name': 'core/create_post.html'}, name='createpost'),
+    path("post/", core_views.PostListView.as_view(), name='post'),
     url(r'^login/$', auth_views.LoginView.as_view(),{'template_name': 'core/login.html'}, name='login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(),{'template_name': 'core/logout.html'}, name='logout'),
     url(r"^signup/$", core_views.signup, name="signup"),

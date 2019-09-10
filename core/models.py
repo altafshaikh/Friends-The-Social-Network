@@ -18,7 +18,7 @@ class Profile(models.Model):
     gender = models.CharField(max_length =20, default="male", choices=(("male","male"),("female","female")))
     address = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    pic = models.ImageField(upload_to="images\\",null=True)
+    pic = models.ImageField(upload_to="images/",null=True)
     
     def __str__(self):
         return "%s" % (self.user)
@@ -32,11 +32,11 @@ def save_profie(sender, instance, created, **kwargs):
 
 
 class Post(models.Model):
-    pic = models.ImageField(upload_to="images\\",null=True)
+    pic = models.ImageField(upload_to="images/",null=True, blank=True)
     subject = models.TextField(max_length=200)
     msg = models.TextField(null=True, blank=True)
     cr_date = models.DateTimeField(auto_now_add=True)
-    upload_by = models.ForeignKey(to=User, on_delete= CASCADE)
+    upload_by = models.ForeignKey(to=User, on_delete= CASCADE,null=True, blank=True)
     
     def __str__(self):
         return "%s" % (self.subject)
@@ -44,7 +44,7 @@ class Post(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(to=Post, on_delete= CASCADE)
     msg = models.TextField(null=True, blank=True)
-    pic = models.ImageField(upload_to="images\\",null=True)
+    pic = models.ImageField(upload_to="images/",null=True)
     subject = models.TextField(max_length=200)
     commented_by = models.ForeignKey(to=User, on_delete= CASCADE)
     cr_date = models.DateTimeField(auto_now_add=True)

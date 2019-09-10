@@ -30,7 +30,7 @@
             z-index: 998;
         }
         #margin-top{
-            margin-top: 5.5%;
+            margin-top: 5.8%;
         }
 
     </style>
@@ -51,12 +51,13 @@
             </div>
             <form class="form-inline ml-auto">
                 <a class="btn btn-light mr-sm-2" href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
-                <li>
+                {% comment %} <li>
                 <div class="inset mr-sm-2">
                   <a><img src=""></a>
                 </div>
-              </li>
+              </li> {% endcomment %}
               <a class="btn btn-light mr-sm-2" href="/profile/edit/{{ user.profile.id }}" class="nav-item nav-link">Edit Profile</a>
+              <a class="btn btn-light mr-sm-2" href="{% url 'post' %}" class="nav-item nav-link">Posts</a>
               <a class="btn btn-light mr-sm-2" href="{% url 'logout' %}" class="nav-item nav-link">Logout</a>
             </form>
         </div>
