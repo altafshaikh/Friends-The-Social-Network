@@ -3,18 +3,36 @@
 
 
 {% block body %}
+<div class="p-5">
+<h1> My Posts</h1> <a href="{% url 'core:createpost' %}" ><button type="button" class="btn btn-dark">Create Post  <span class="fa fa-plus"></span></button></a>
+<hr>
 
-<form>
-<input value="{{ request.GET.si }}" type="text" name ="si" />
-<input type="submit" value="search" />
+ <form>
+    <input calss="mr-3" value="{{ request.GET.si }}" type="text" name ="si" />
+    <input class="btn btn-dark" type="submit" value="search" />
 </form>
 
-{% for n1 in post_list %}
-<h1>{{n1.subject}} :: {{n1.cr_date | date:"d/m/y"}}
-<a href="/post/{{n1.id}}">Read More</a>
-</h1>
 
+<table class="table my-3">
+    <thead class="thead-dark">
+        <tr>
+            <th>Subject</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
 
-{% endfor %}
-<a href="{% url 'core:createpost' %}" ><button type="button" class="btn btn-primary">Create Post</button></a>
+    {% for n1 in post_list %}
+    <tr>
+            <td scope="row">{{n1.subject}}</td>
+            <td>{{n1.cr_date | date:"d/m/y"}}</td>
+            <td><a class="btn btn-dark btn-sm" href="/post/{{n1.id}}">Detail</a> 
+            {% comment %} <a class="btn btn-dark btn-sm fa fa-edit" href="/post/comment/{{n1.id}}">Comment</a> {% endcomment %}
+            <a class="btn btn-danger btn-sm fa fa-trash" href="/post/delete/{{n1.id}}"></a></td>
+        </tr>
+
+    {% endfor %}
+    </table>
+</div>  
+
 {% endblock %}

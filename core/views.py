@@ -1,7 +1,7 @@
 from django.urls import reverse,reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
-from django.views.generic import CreateView, TemplateView, UpdateView, ListView
+from django.views.generic import CreateView, TemplateView, UpdateView, ListView, DetailView, DeleteView
 from . import forms
 from core.models import Post, PostLike, Profile, Comment, FollowUser
 from django.shortcuts import render, redirect
@@ -83,6 +83,14 @@ class PostListView(ListView):
             si=""
         return Post.objects.filter(Q(upload_by = self.request.user)).filter(Q(subject__icontains = si) | Q(msg__icontains = si)).order_by("-id")
     
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'core/post_detail.html'
+
+class PostDeleteView(DeleteView):
+    model = Post
+
 
 # class PostDoneView(TemplateView):
 #     template_name = 'registration/done.html'
