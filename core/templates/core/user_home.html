@@ -1,1 +1,44 @@
-<h1>Logged in User Home{{ object_list}}</h1>
+
+{% if posts %}
+
+{% for post in posts %}
+
+<div class="container">
+  <div class="row justify-content-md-center">
+    
+    <div class="col-sm-auto">
+        <div class="card" style="width: 25rem;margin:10px;">
+            <div class="card-body">
+                <h5 class="card-title">{{post.upload_by}}<span style="float: right;">{{post.cr_date | date:"d/m/y"}}</span></h5>
+            </div>
+            
+            <img class="card-img-top" src="{{post.pic.url}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{post.subject}}</h5>
+                <p class="card-text">{{post.msg}}</p>
+            </div>
+            
+            <div class="card-body">
+                <a href="#" class="card-link">Like</a>
+                <a href="#" class="card-link">Comment</a>
+                <a href="#" class="card-link">Detail</a>
+            </div>
+        </div>
+    </div>
+    
+  </div>
+</div>
+
+{% endfor %}
+
+{% else %}
+
+<div class="container">
+  <div class="row justify-content-md-center">
+        <div class="col-sm-auto jumbotron">
+            <h2>No Post to Show, You Don't Follow Anyone!!</h2>
+        </div>
+    </div>
+</div>
+
+{% endif %}

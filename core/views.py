@@ -8,9 +8,23 @@ from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.views.generic.base import View
 
-class IndexView(TemplateView):
-    template_name = 'registration/index.html'
+class IndexView(View):
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        post_list=[]
+        pro_id = self.request.user.profile.id
+        usr_pro = Profile.objects.filter(pk=6)[0]
+        usr_follow = FollowUser.objects.filter(followed_by=usr_pro)
+        for profile in usr_follow:
+            following_usr = profile.profile.user
+            post = Post.objects.filter(upload_by=following_usr)[0]
+            post_list.append(post)
+        context["posts"]=post_list
+        print(context)
+        return render(request, "registration/index.html", context=context)
 
     
 
@@ -57,17 +71,17 @@ def post_create(request):
 
         # print(form.errors)#most helpfull statement help me to slove the error
         if (form.is_valid()):
-            print("why i am not here")
+            # print("why i am not here")
             user = form.save()
             user.refresh_from_db()  # load the profile instance created by the signal
             user.upload_by= request.user
             
             user.subject = form.cleaned_data.get('subject')
             user.msg = form.cleaned_data.get('msg')
-            print(form.cleaned_data.get('pic'))
+            # print(form.cleaned_data.get('pic'))
             user.pic = form.cleaned_data.get('pic')
             user.save()
-            print("i reached here")
+            # print("i reached here")
             #post_list = Post.objects.filter(Q(upload_by = self.request.user)).filter(Q(subject__icontains = si) | Q(msg__icontains = si)).order_by("-id")
             return redirect("post")
     else:
