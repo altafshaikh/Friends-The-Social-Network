@@ -9,6 +9,9 @@
   margin-left: auto;
   margin-right: auto;
   width: 50%;
+
+
+
 }
 </style>
 <div class="p-5">
@@ -23,12 +26,38 @@
 <hr>
     <div class="row">
         <div class="col-sm-6">
-            <p><strong>Gender :: </strong> {{profile.gender}}</p>
-            <p><strong>Status :: </strong> {{ profile.status }}</p>
-            <p><strong>Age :: </strong> {{ profile.age }}</p>
-            <p><strong>Phone No :: </strong> {{ profile.phone_no }}</p>
-            <p><strong>Description :: </strong> {{ profile.description }}</p>
-            <p><strong>Address :: </strong> {{ profile.address }}</p>
+        <table class="table table-borderless table-hover table-striped">
+           
+            <tr>
+                <td><strong>Gender</strong></td>
+                <td> {{profile.gender}}</td>
+            </tr>
+            
+            <tr>
+                <td><strong>Status</strong></td>
+                <td> {{ profile.status }}</td>
+            </tr>
+
+            <tr>
+                <td><strong>Age</strong></td>
+                <td> {{profile.age}}</td>
+            </tr>
+
+            <tr>
+                <td><strong>Phone No</strong></td>
+                <td> {{profile.phone_no}}</td>
+            </tr>
+
+            <tr>
+                <td><strong>Description</strong></td>
+                <td> {{profile.description}}</td>
+            </tr>
+
+            <tr>
+                <td><strong>Address</strong></td>
+                <td> {{profile.address}}</td>
+            </tr>
+        </table>    
         </div>
         <div class="col-sm-6">
             <img id="profile_pic" class="img-fluid" src="/media/{{profile.pic}}" />
@@ -36,7 +65,12 @@
     </div>
 
 </div>  
-<script>
+{% comment %} <script>
+$(document).ready(function(){
+    $("table.tr.td").attr({"class": "text-capitalize"
+});
+
+</script> {% endcomment %}
 
 {% include 'core/base_footer.html' %}
 {% endblock %}

@@ -5,6 +5,7 @@
 <title>{% block title %}Friends{% endblock %}</title>
 {% load staticfiles %}
 <head>
+    <link rel="shortcut icon" type="image/png" href="/static/logo.png"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -32,20 +33,27 @@
         #margin-top{
             margin-top: 5.8%;
         }
+        #logo{
+            border-radius:30px;
+            height:30px;
+            width:30px;
+        }
 
     </style>
 </head>
 <body>
 <div class="bs-example">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a href="#" class="navbar-brand">Friends</a>
+        
+        <img class="mr-2" id="logo" src="/static/logo.png" style="display: inline-block;">
+        <span style="display: inline-block;"><a href="/" class="navbar-brand">Friends</a></span>
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
         {% if user.is_authenticated %}
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav">
-                <a class="btn btn-light mr-sm-2" href="#" class="nav-item nav-link">Welcome,{{user.username}}</a>
+                <a class="btn btn-light mr-sm-2" href="#" class="nav-item nav-link">Welcome, {{user.username}}</a>
                 <form action="/profile/" class="form-inline">
                     <input type="text" class="form-control mr-sm-2" placeholder="Search" value="{{ request.GET.si }}" type="text" name ="si" />
                     <button type="submit" class="btn btn-outline-light">Search</button>
