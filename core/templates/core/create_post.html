@@ -20,7 +20,7 @@
 <div class="p-5">
 <div class="container">
 <h1> My Post</h1>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{form.as_p}}
         
