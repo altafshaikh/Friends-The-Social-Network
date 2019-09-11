@@ -1,18 +1,31 @@
 {% extends 'core/base_nav.html' %}
 {% block login_active %}active{% endblock %}
 
+{% load crispy_forms_tags %}
+
+
 
 {% block body %}
 
-<div class="p-5">
-<div class="col-sm-6 offset-sm-3">
-<h1> Are You Sure !!</h1>
-<hr>
-    <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input class="btn btn-danger my-3" type="submit" value="Submit">
-    </form>
+   <div class="container p-5">
+      <div class="row justify-content-center">
+        <div class="col-8">
+          <h1 class="mt-2">Are You Sure !!</h1>
+          <hr class="mt-0 mb-4">
+            <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+      </div>
 </div>
-</div>
+  
+<script>
+$(document).ready(function(){
+    $("textarea").attr({"rows": "3","cols": "15"
+    });
+});
+</script>
+{% include 'core/base_footer.html' %}
 {% endblock %}

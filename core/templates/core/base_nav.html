@@ -54,7 +54,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav">
                 <a class="btn btn-light mr-sm-2" href="#" class="nav-item nav-link">Welcome, {{user.username}}</a>
-                <form action="/profile/" class="form-inline">
+                <form action="/search/" class="form-inline">
                     <input type="text" class="form-control mr-sm-2" placeholder="Search" value="{{ request.GET.si }}" type="text" name ="si" />
                     <button type="submit" class="btn btn-outline-light">Search</button>
                 </form>

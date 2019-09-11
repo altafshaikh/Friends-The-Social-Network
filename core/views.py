@@ -49,7 +49,7 @@ class IndexView(View):
 class ProfileUpdateView(UpdateView):
     model = Profile
     template_name = "core/profile_form.html"
-    fields = ["name","user","age","phone_no","status","gender","address","description","pic"]
+    fields = ["name","age","phone_no","status","gender","address","description","pic"]
 
 def signup(request):
     if request.method == 'POST':
@@ -70,26 +70,26 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 def post_create(request):
-    print(request.method == 'POST')
+    
     if (request.method == 'POST'):
         form = forms.PostCreateForm(request.POST, request.FILES)
 
-        # print(form.errors)#most helpfull statement help me to slove the error
+        print(form.errors)#most helpfull statement help me to slove the error
         if (form.is_valid()):
             
             user = form.save()
-            user.refresh_from_db()  # load the profile instance created by the signal
+            
             user.upload_by= request.user
             
             user.subject = form.cleaned_data.get('subject')
             user.msg = form.cleaned_data.get('msg')
-
+            # print(request.FILES)
             user.pic = form.cleaned_data.get('pic')
             user.save()
             return redirect("post")
     else:
         form = forms.PostCreateForm()
-        print("i am returning fro here")
+        
     return render(request, 'core/create_post.html', {'form': form})
 
 @method_decorator(login_required, name="dispatch")
@@ -118,14 +118,15 @@ class PostDeleteView(DeleteView):
 
 @method_decorator(login_required, name="dispatch")
 class ProfileListView(ListView):
-    model = Profile
+    # model = Profile
     template_name = "core/profile_list.html"
 
     def get_queryset(self):
         si = self.request.GET.get("si")
         if si==None:
             si=""
-        return Profile.objects.filter(Q(name__icontains = si) | Q(gender__icontains = si) | Q(status__icontains = si) | Q(age__icontains = si)).filter(~Q(id__in=[1,self.request.user.profile.id])).order_by("-id")
+        post = Profile.objects.filter(Q(name__icontains = si) | Q(gender__icontains = si) | Q(status__icontains = si) | Q(age__icontains = si)).filter(~Q(id__in=[1,self.request.user.profile.id])).order_by("-id")
+        return render(self.request, 'core/search.html', {'post': post})
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProfileListView, self).get_context_data(*args, **kwargs)
@@ -140,7 +141,7 @@ class ProfileListView(ListView):
             following_list.append(following_usr)
 
         context['follow_list'] = following_list
-        print(context)
+        # print(context)
         return context
 
 class ProfileDetailView(DetailView):
@@ -196,8 +197,8 @@ def comment(request,pk):
             post = user_post
 
             user_post = Post.objects.get(pk=pk)
-            count = user_post.count
-            user_post.count = count+1
+            count = user_post.comment_count
+            user_post.comment_count = count+1
             user_post.save()
 
             Comment.objects.create(post=post,commented_by=commented_by,msg=msg)
@@ -209,4 +210,12 @@ def comment(request,pk):
     
     return render(request, 'core/comment.html', {'form': form})
 
+class SearchView(ListView):
+    model = Profile
+    template_name = "core/search.html"
 
+    def get_queryset(self):
+        si = self.request.GET.get("si")
+        if si==None:
+            si=""
+        return Profile.objects.filter(Q(name__icontains = si) | Q(gender__icontains = si) | Q(status__icontains = si) | Q(age__icontains = si)).filter(~Q(id__in=[1,self.request.user.profile.id])).order_by("-id")

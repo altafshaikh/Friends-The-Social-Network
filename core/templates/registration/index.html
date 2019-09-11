@@ -20,7 +20,9 @@
 .bs-example{
 	margin: 15px;
 }
-
+{% comment %} #cimg{
+    min-height: 480px;
+} {% endcomment %}
 </style>
 </head>
 <body>
@@ -30,18 +32,15 @@
         <ol class="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
             <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
+            {% comment %} <li data-target="#myCarousel" data-slide-to="2"></li> {% endcomment %}
         </ol>
         <!-- Wrapper for carousel items -->
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="/static/core/images/slide1.jpg" alt="First Slide">
+                <img src="/static/core/images/winter.jpg" id="cimg" alt="First Slide">
             </div>
             <div class="carousel-item">
-                <img src="/static/core/images/slide2.jpg" alt="Second Slide">
-            </div>
-            <div class="carousel-item">
-                <img src="/static/core/images/slide3.png" alt="Third Slide">
+                <img src="/static/core/images/slide.jpg" id="cimg" alt="Second Slide">
             </div>
         </div>
         <!-- Carousel controls -->
@@ -55,13 +54,11 @@
 </div>
 
 
-
-
 <div class="bs-example">    
     <div class="jumbotron">
-        <h1>Learn to Create Websites</h1>
-        <p class="lead">In today's world internet is the most popular way of connecting with the people. At <a href="https://www.tutorialrepublic.com" target="_blank">tutorialrepublic.com</a> you will learn the essential of web development technologies along with real life practice example, so that you can create your own website to connect with the people around the world.</p>
-        <p><a href="https://www.tutorialrepublic.com" target="_blank" class="btn btn-primary btn-lg">Start learning today</a></p>
+        <h1>Welcome to Friends-The Social Network</h1>
+        <p class="lead">In today's world internet is the most popular way of connecting with the people. At <a href="/" >Friends.com</a> you can connect with the people around the world.</p>
+        <p><a href="{% url 'signup' %}" class="btn btn-primary btn-lg">Join Us Today</a></p>
     </div>
 </div>
 

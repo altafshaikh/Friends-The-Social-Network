@@ -25,6 +25,8 @@ urlpatterns = [
     path("post/comment/", core_views.comment, name='comment'),
     path("post/comment/<int:pk>", core_views.comment, name='commentpost'),
 
+    path("search/", core_views.SearchView.as_view(), name='search'),
+
     url(r'^login/$', auth_views.LoginView.as_view(),{'template_name': 'core/login.html'}, name='login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(),{'template_name': 'core/logout.html'}, name='logout'),
     url(r"^signup/$", core_views.signup, name="signup"),

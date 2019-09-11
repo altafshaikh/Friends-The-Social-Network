@@ -1,0 +1,45 @@
+{% extends 'core/base_nav.html' %}
+{% block login_active %}active{% endblock %}
+
+{% block body %}
+<div class="p-5">
+<h1>Search Profiles </h1>
+<hr>
+<form>
+    <input calss="mr-3" value="{{ request.GET.si }}" type="text" name ="si" />
+    <input class="btn btn-dark" type="submit" value="search" />
+</form> 
+
+
+<table class="table my-3 table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>More</th>
+        </tr>
+    </thead>
+
+    {% for n1 in profile_list %}
+    <tr>
+        <td scope="row">{{n1.name}}</td>
+        <td>{{n1.age}}</td>
+        <td>{{n1.gender}}</td>
+        <td>
+        <a class="btn btn-dark btn-sm" href="/profile/{{n1.id}}">Detail</a> 
+        {% if n1.user in follow_list %}
+        <a class="btn btn-dark btn-sm" href="/profile/unfollow/{{n1.id}}">UnFollow</a>
+        {% else %}
+        <a class="btn btn-dark btn-sm" href="/profile/follow/{{n1.id}}">Follow</a>
+        {% endif %}
+        </td>
+        
+    </tr>
+
+    {% endfor %}
+    </table>
+</div>  
+
+{% include 'core/base_footer.html' %}
+{% endblock %}
