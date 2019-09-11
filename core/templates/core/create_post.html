@@ -1,32 +1,31 @@
 {% extends 'core/base_nav.html' %}
 {% block login_active %}active{% endblock %}
 
+{% load crispy_forms_tags %}
+
+
 
 {% block body %}
-{% comment %} <style>
 
-.green-border-focus .form-control:focus {
-    border: 1px solid #8bc34a;
-    box-shadow: 0 0 0 0.2rem rgba(139, 195, 74, .25);
-
-}
-</style>
-
-<div class="form-group green-border-focus">
-  <label for="exampleFormControlTextarea5">Write a Post here</label>
-  <textarea class="form-control" id="exampleFormControlTextarea5" rows="3"></textarea>
-  <button type="button" class="btn btn-primary">Primary</button>
-</div> {% endcomment %}
-<div class="p-5">
-<div class="container">
-<h1> My Post</h1>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{form.as_p}}
-        
-        <input type="submit" value="Submit">
-    </form>
+   <div class="container p-5">
+      <div class="row justify-content-center">
+        <div class="col-8">
+          <h1 class="mt-2">Post</h1>
+          <hr class="mt-0 mb-4">
+            <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                <button type="submit" class="btn btn-success">Post</button>
+            </form>
+        </div>
+      </div>
 </div>
-</div>
+  
+<script>
+$(document).ready(function(){
+    $("textarea").attr({"rows": "2","cols": "15"
+    });
+});
+</script>
 {% include 'core/base_footer.html' %}
 {% endblock %}

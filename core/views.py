@@ -100,9 +100,15 @@ class PostListView(ListView):
             si=""
         return Post.objects.filter(Q(upload_by = self.request.user)).filter(Q(subject__icontains = si) | Q(msg__icontains = si)).order_by("-id")
     
-class PostDetailView(DetailView):
-    model = Post
-    template_name = 'core/post_detail.html'
+class PostDetailView(View):
+    def get(self, request, *args, **kwargs):
+        post_id =kwargs['pk']
+        post=Post.objects.filter(pk=post_id)[0]
+        comments = Comment.objects.filter(post_id=post_id)
+        # likes = PostLike.objects.filter(post_id=16)
+        context = {"post":post,"comments":comments}
+        return render(request, 'core/post_detail.html', context)
+    		
 
 class PostDeleteView(DeleteView):
     model = Post
@@ -142,6 +148,7 @@ def follow(request,pk):
     user = Profile.objects.get(pk=pk)
     FollowUser.objects.create(profile=user,followed_by=request.user.profile)
     return HttpResponseRedirect(redirect_to = "/profile/")
+
 def unfollow(request,pk):
     user = Profile.objects.get(pk=pk)
     criterion1 = Q(profile=user)

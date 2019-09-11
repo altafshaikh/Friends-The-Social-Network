@@ -6,9 +6,7 @@
 
 {% if user.is_authenticated %}
     {% include 'core/user_home.html' %}
-    {% include 'core/base_footer.html' %}
-
-
+    
 {% else %}
 <style>
 .carousel{
@@ -68,8 +66,8 @@
 </div>
 
 
-{% include 'core/base_footer.html' %}
-{% endif %}
 
+{% endif %}
+{% include 'core/base_footer.html' %}
 {% endblock %}
 

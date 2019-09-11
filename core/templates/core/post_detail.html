@@ -3,22 +3,56 @@
 
 
 {% block body %}
+<style>
+#profile_pic {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+</style>
+
 <div class="p-5">
-    <h1> {{ post.subject }}</h1> <a href="{% url 'core:createpost' %}" ><button type="button" class="btn btn-dark">Create Post  <span class="fa fa-plus"></span></button></a>
-    <hr>
+    <div class="row">
+    <div class="col-sm-6">
+        <h1> {{ post.subject }}</h1> <a href="{% url 'core:createpost' %}" ><button type="button" class="btn btn-dark">Create Post&nbsp;&nbsp;<span class="fa fa-pencil"></span></button></a>
+    </div>
+    <div class="col-sm-6">
+        <a href="/post/" class="btn btn-dark" style="float: right;">Back</a> 
+    </div>
+</div>    
+<hr>
 
     <div class="row">
         <div class="col-sm-6">
             <p><strong>Date :: </strong> {{post.cr_date | date:"d/m/y"}}</p>
             <p><strong>Message :: </strong> {{ post.msg }}</p>
+            <p><strong>Likes :: </strong> {{ post.count }}</p>
+            <p><strong>Comments :: </strong> {{ post.comment_count }}</p>
+            
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Message</th>
+                            <th>Comment By</th>
+                        </tr>
+                    </thead>
+                {% for comment in comments %}
+                        <tr>
+                            <td>{{ comment.msg }}</td>
+                            <td>{{ comment.commented_by }}</td>
+                        </tr>
+                {% endfor %}
+                </table>
+            
         </div>
         <div class="col-sm-6">
-            <img class="img-fluid" src="/media/{{post.pic}}" />
+            <img id="profile_pic" class="img-fluid" src="/media/{{post.pic}}" />
         </div>
     </div>
 
 </div>  
-<a href="/post/" class="btn btn-dark">Back</a> 
+
 
 {% include 'core/base_footer.html' %}
 {% endblock %}

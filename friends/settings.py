@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'widget_tweaks',
     'core',
     'account',
 ]
@@ -112,7 +114,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'index'
 
