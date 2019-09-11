@@ -16,29 +16,32 @@ class IndexView(View):
         context = {"posts":[]}
         post_list=[]
         post_like_list=[]
-        if not self.request.user == None:
-            user = self.request.user
-            pro_id = self.request.user.profile.id
-            usr_pro = Profile.objects.filter(pk=pro_id)[0]
-            usr_follow = FollowUser.objects.filter(followed_by=usr_pro)
-            usr_post_liked = PostLike.objects.filter(liked_by=usr_pro.user)
-            print(usr_post_liked)
-            for profile in usr_follow:
-                following_usr = profile.profile.user
-                post = Post.objects.filter(upload_by=following_usr)[0]
-                post_list.append(post)
+        # print(self.request.user.profile.id)
 
-            for usr_liked in usr_post_liked:
-                liked_usr_post = usr_liked.post
-                print(liked_usr_post)
-                # post = Post.objects.filter(upload_by=liked_usr)[0]
-                post_like_list.append(liked_usr_post)
-            
-            context["posts"]=post_list
-            context["post_likes"]=post_like_list
-            context["user"] =user
-        print(context)
-        return render(request, "registration/index.html", context=context)
+        try:
+            if not self.request.user == None:
+                user = request.user
+                pro_id = request.user.profile.id
+                usr_pro = Profile.objects.filter(pk=pro_id)[0]
+                usr_follow = FollowUser.objects.filter(followed_by=usr_pro)
+                usr_post_liked = PostLike.objects.filter(liked_by=usr_pro.user)
+                
+                for profile in usr_follow:
+                    following_usr = profile.profile.user
+                    post = Post.objects.filter(upload_by=following_usr)[0]
+                    post_list.append(post)
+
+                for usr_liked in usr_post_liked:
+                    liked_usr_post = usr_liked.post
+                    # post = Post.objects.filter(upload_by=liked_usr)[0]
+                    post_like_list.append(liked_usr_post)
+                
+                context["posts"]=post_list
+                context["post_likes"]=post_like_list
+                context["user"] =user
+                return render(request, "registration/index.html", context=context)
+        except:
+            return render(request, "registration/index.html", context=context)
 
     
 
@@ -207,6 +210,3 @@ def comment(request,pk):
     return render(request, 'core/comment.html', {'form': form})
 
 
-# class ProfileDetailView(DetailView):
-#     model = Profile
-#     template_name = 'core/profile_detail.html'
