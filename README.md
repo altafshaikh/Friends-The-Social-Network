@@ -102,7 +102,8 @@
 1. Clone this repository
 `git clone https://github.com/altaf99/Friends-The-Social-Network.git`
 2. Install dependencies
-`pip install -r requirements.txt`
+* Make sure proper version of python  and django is installed and then installed crispy_form
+`pip install django-crispy-forms`
 3. Command to start the Django server
 * In Linux
 `python manage.py runserver`
