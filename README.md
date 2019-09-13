@@ -1,4 +1,4 @@
-# Welcome to the Friends-The-Social-Network wiki!
+# Welcome to the Friends-The-Social-Network 
 ### Friends is a New Era Social media platform which provides a lot of new features to their user. It helps you to keep connect with your loved ones. It has awesome UI which provides a good user experience with a lot of other functionalities. 
 
 ## Our Highlights
