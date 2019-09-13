@@ -92,6 +92,28 @@
 22. Logout
 ![Logout](https://github.com/altaf99/Friends-The-Social-Network/blob/master/Friends_project_ss/usr_logout.png)
 
+***
+### Technologies and Libraries Used
+* Django 2.1.7
+* Python 3.6.3
+* Bootstrap4
+* Crispy Forms
+### How to use this project
+1. Clone this repository
+`git clone https://github.com/altaf99/Friends-The-Social-Network.git`
+2. Install dependencies
+`pip install -r requirements.txt`
+3. Command to start the Django server
+* In Linux
+`python manage.py runserver`
+* In Windows
+`python3 manage.py runserver`
+4. Type this URL in your browser
+`http://localhost:8000`
+
+5. Done
+### Thank You
+
 
 
 
