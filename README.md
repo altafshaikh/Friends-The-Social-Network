@@ -118,6 +118,8 @@
 5. Done
 ### Thank You
 
+MIT License
 
+Copyright (c) 2019 Altaf Shaikh
 
 
